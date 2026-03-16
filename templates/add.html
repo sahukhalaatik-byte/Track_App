@@ -1,10 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Transaction</title>
 </head>
+
 <body>
-$END$
+<a href="{{ url_for('index') }}">Back</a>
+
+    <h1>Add Transaction</h1>
+    <form action="/add" method="POST">
+
+        <label for="title">Title</label>
+        <input type="text" id="title" name="title" required>
+
+        <label for="amount">Amount (Rs)</label>
+        <input type="number" id="amount" name="amount" required>
+
+        <label for="type">Type</label>
+        <select id="type" name="type" required>
+            <option value="income">Income</option>
+            <option value="expense">Expense</option>
+        </select>
+
+        <label for="category">Category</label>
+        <select id="category" name="category" required>
+            <option>Food</option>
+            <option>Bill</option>
+            <option>Salary</option>
+            <option>Others</option>
+        </select>
+
+        <label for="date">Date</label>
+        <input type="date" id="date" name="date" value="{{ today }}" required>
+
+        <label for="notes">Notes (Optional)</label>
+        <textarea id="notes" name="notes"></textarea>
+
+        <button type="submit">Add</button></br>
+        <a href="{{ url_for('index') }}">Cancel</a>
+
+    </form>
 </body>
 </html>

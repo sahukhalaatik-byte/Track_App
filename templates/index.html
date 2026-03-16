@@ -1,10 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Transactions</title>
 </head>
 <body>
-$END$
+<div class="container"></div>
+    <h1>My Transactions</h1>
+
+<div class="stats">
+    <div class="stat-card">
+        <div class="label">Balance</div>
+        <div class="value">Rs.{{ balance }}</div>
+    </div>
+    <div class="stat-card income">
+        <div class="label">Total Income</div>
+        <div class="value">Rs.{{ total_income }}</div>
+    </div>
+    <div class="stat-card expense">
+        <div class="label">Total Expenses</div>
+        <div class="value">Rs.{{ total_expenses }}</div>
+    </div>
+</div>
+
+<h1>All Transactions</h1>
+<a href="{{ url_for('add') }}">Add Transaction</a>
+
+<table border="1" cellpadding="8">
+    <tr>
+        <th>ID</th>
+        <th>Title</th>
+        <th>Amount</th>
+        <th>Type</th>
+        <th>Category</th>
+        <th>Date</th>
+        <th>Notes</th>
+    </tr>
+    {% for trn in transactions %}
+    <tr>
+        <td>{{ trn['id'] }}</td>
+        <td>{{ trn['title'] }}</td>
+        <td>{{ trn['amount'] }}</td>
+        <td>{{ trn['type'] }}</td>
+        <td>{{ trn['category'] }}</td>
+        <td>{{ trn['date'] }}</td>
+        <td>{{ trn['notes'] }}</td>
+        <td>
+            <a href="{{ url_for('edit', id=trn['id']) }}">Edit</a>
+            <a href="{{ url_for('delete', id=trn['id']) }}">Delete</a>
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+<a href="{{ url_for('logout') }}">Logout</a>
+
 </body>
 </html>
