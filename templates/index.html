@@ -6,23 +6,94 @@
     <title>My Transactions</title>
 </head>
 <body>
-<div class="container"></div>
-    <h1>My Transactions</h1>
+
+<h1>My Transactions</h1>
+
 
 <div class="stats">
     <div class="stat-card">
-        <div class="label">Balance</div>
-        <div class="value">Rs.{{ balance }}</div>
+        <div class="label"><b>Balance</b></div>
+        <div class="value">Rs. {{ "%.2f"|format(balance) }}</div>
     </div>
     <div class="stat-card income">
-        <div class="label">Total Income</div>
-        <div class="value">Rs.{{ total_income }}</div>
+        <div class="label"><b>Total Income</b></div>
+        <div class="value">Rs. {{ "%.2f"|format(total_income) }}</div>
     </div>
     <div class="stat-card expense">
-        <div class="label">Total Expenses</div>
-        <div class="value">Rs.{{ total_expenses }}</div>
+        <div class="label"><b>Total Expenses</b></div>
+        <div class="value">Rs. {{ "%.2f"|format(total_expenses) }}</div>
     </div>
 </div>
+
+<p>
+</p>
+
+{% set month_names = ['January','February','March','April','May','June','July','August','September','October','November','December'] %}
+<div class="filter-card">
+    <form method="GET" action="{{ url_for('index') }}">
+        <div class="filter">
+
+            <div class="field">
+                <label>Month</label>
+                <select name="month">
+                    <option value="0" {% if no_month_filter %}selected{% endif %}>All</option>
+                    {% for i in range(1, 13) %}
+                    <option value="{{ i }}" {% if not no_month_filter and month == i %}selected{% endif %}>
+                        {{ month_names[i-1][:3] }}
+                    </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="field">
+                <label>Year</label>
+                <select name="year">
+                    {% for y in range(2023, 2028) %}
+                    <option value="{{ y }}" {% if year == y %}selected{% endif %}>{{ y }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="field">
+                <label>Type</label>
+                <select name="type">
+                    <option value="all"     {% if filter_type == 'all'     %}selected{% endif %}>All</option>
+                    <option value="income"  {% if filter_type == 'income'  %}selected{% endif %}>Income</option>
+                    <option value="expense" {% if filter_type == 'expense' %}selected{% endif %}>Expense</option>
+                </select>
+            </div>
+
+            <div class="field">
+                <label>Category</label>
+                <select name="category">
+                    <option value="all"    {% if filter_category == 'all'    %}selected{% endif %}>All</option>
+                    <option value="Food"   {% if filter_category == 'Food'   %}selected{% endif %}>Food</option>
+                    <option value="Bill"   {% if filter_category == 'Bill'   %}selected{% endif %}>Bill</option>
+                    <option value="Salary" {% if filter_category == 'Salary' %}selected{% endif %}>Salary</option>
+                    <option value="Travel" {% if filter_category == 'Travel' %}selected{% endif %}>Travel</option>
+                    <option value="Others" {% if filter_category == 'Others' %}selected{% endif %}>Others</option>
+                </select>
+            </div>
+
+            <div class="field">
+                <label>From date</label>
+                <input type="date" name="date_from" value="{{ date_from }}">
+            </div>
+
+            <div class="field">
+                <label>To date</label>
+                <input type="date" name="date_to" value="{{ date_to }}">
+            </div>
+
+        </div>
+
+        <div">
+            <button type="submit" class="btn-filter">Apply</button>
+            <a href="{{ url_for('index') }}" class="btn-reset">Reset</a>
+        </div>
+    </form>
+</div>
+
 
 <h1>All Transactions</h1>
 <a href="{{ url_for('add') }}">Add Transaction</a>
@@ -54,6 +125,8 @@
     {% endfor %}
 </table>
 
+
+<br>
 <a href="{{ url_for('logout') }}">Logout</a>
 
 </body>
